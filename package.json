@@ -1,31 +1,44 @@
 {
-  "name": "node-typescript-boilerplate",
+  "name": "ossound",
   "version": "0.0.0",
-  "description": "Minimalistic boilerplate to quick-start Node.js development in TypeScript.",
-  "type": "module",
   "engines": {
     "node": "20"
   },
   "devDependencies": {
+    "@ngneat/falso": "^6.4.0",
+    "@types/bcrypt": "^5.0.0",
     "@types/node": "20",
+    "@types/pg": "^8.10.2",
     "@typescript-eslint/eslint-plugin": "^5.59",
     "@typescript-eslint/parser": "^5.59",
+    "drizzle-kit": "^0.19.2",
     "eslint": "^8.38",
     "eslint-config-prettier": "^8.8",
     "prettier": "^2.8",
     "rimraf": "^5.0",
+    "ts-node": "^10.9.1",
     "typescript": "^5.0"
   },
   "scripts": {
-    "start": "node build/src/main.js",
-    "prestart:": "npm run build",
-    "clean": "rimraf coverage build tmp",
-    "prebuild": "npm run lint",
-    "build": "tsc -p tsconfig.json",
-    "build:watch": "tsc -w -p tsconfig.json",
+    "start": "ts-node ./src/index.ts",
+    "dev": "docker compose up",
     "lint": "eslint . --ext .ts --ext .mts",
-    "prettier": "prettier --config .prettierrc --write ."
+    "prettier": "prettier --config .prettierrc --write .",
+    "migrations:generate": "drizzle-kit generate:pg",
+    "migrations:run": "ts-node ./scripts/run-migrations.ts",
+    "test": " docker compose -f ./docker-compose.test.yml down && docker compose -f ./docker-compose.test.yml up --no-attach postgres-test"
   },
   "author": "Anderson Joseph <andersonjoseph@mailfence.com>",
-  "license": "Apache-2.0"
+  "dependencies": {
+    "@drdgvhbh/postgres-error-codes": "^0.0.6",
+    "@fastify/error": "^3.3.0",
+    "@fastify/jwt": "^7.1.0",
+    "bcrypt": "^5.1.0",
+    "drizzle-orm": "^0.27.0",
+    "fastest-validator": "^1.17.0",
+    "fastify": "^4.18.0",
+    "fastify-plugin": "^4.5.0",
+    "hashids": "^2.3.0",
+    "pg": "^8.11.1"
+  }
 }
