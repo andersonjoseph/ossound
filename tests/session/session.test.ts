@@ -17,6 +17,54 @@ function testUnauthorizedError(
   });
 }
 
+describe('GET /session', () => {
+  test('return status 403 if user is not authenticated', async () => {
+    const response = await server.inject({
+      url: '/session',
+      method: 'get',
+    });
+
+    const JSONBody = JSON.parse(response.body);
+
+    assert.strictEqual(response.statusCode, 401, 'statusCode is 401');
+    assert.deepStrictEqual(JSONBody, {
+      statusCode: 401,
+      code: 'FST_JWT_NO_AUTHORIZATION_IN_HEADER',
+      error: 'Unauthorized',
+      message: 'No Authorization was found in request.headers',
+    });
+  });
+
+  test('return status 200 if user is authenticated', async () => {
+    const user = await testUtils.createRandomUser();
+
+    const session = await testUtils.createSession({
+      username: user.data.username,
+      password: user.input.password,
+    });
+
+    const response = await server.inject({
+      url: '/session',
+      method: 'get',
+      headers: {
+        authorization: `Bearer ${session.token}`,
+      },
+    });
+
+    const JSONBody = JSON.parse(response.body);
+
+    assert.strictEqual(response.statusCode, 200, 'statusCode is 200');
+
+    assert.strictEqual(JSONBody.id, user.data.id, 'user id is the same');
+    assert.strictEqual(
+      JSONBody.username,
+      user.data.username,
+      'username is the same',
+    );
+    assert.strictEqual(JSONBody.email, user.data.email, 'email is the same');
+  });
+});
+
 describe('POST /session', () => {
   test('return status 401 if user is incorrect', async () => {
     const user = await testUtils.createRandomUser();

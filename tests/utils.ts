@@ -11,10 +11,6 @@ async function createRandomUser(): Promise<{
   const username = randFirstName({ withAccents: false }).toLowerCase();
   const password = randPassword();
 
-  server.inject({
-    url: '/',
-  });
-
   const response = await server.inject({
     url: '/users',
     method: 'post',
@@ -37,6 +33,22 @@ async function createRandomUser(): Promise<{
   };
 }
 
+async function createSession(data: { username: string; password: string }) {
+  const response = await server.inject({
+    url: '/session',
+    method: 'post',
+    body: {
+      username: data.username,
+      password: data.password,
+    },
+  });
+
+  const JSONBody = JSON.parse(response.body);
+
+  return JSONBody;
+}
+
 export default {
   createRandomUser,
+  createSession,
 };

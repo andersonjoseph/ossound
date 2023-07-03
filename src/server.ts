@@ -10,6 +10,7 @@ import hashidsPlugin from './plugins/hashids';
 declare module 'fastify' {
   export interface FastifyInstance {
     getEnvironmentVariableOrThrow: (variable: string) => string;
+    authenticate: (...args: unknown[]) => Promise<void>;
   }
 }
 
