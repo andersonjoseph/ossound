@@ -28,4 +28,8 @@ export type SerializedUser = Omit<
   Optional<User, 'password' | 'passwordResetToken'>,
   'id'
 > & { id: string };
+export type AuthenticatedUser = Omit<
+  Optional<User, 'password' | 'passwordResetToken'>,
+  'id'
+> & { id: string };
 export type NewUser = InferModel<typeof usersTable, 'insert'>;

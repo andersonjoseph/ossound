@@ -6,6 +6,9 @@ import fp from 'fastify-plugin';
 import { sessionRoutes } from './session/routes';
 import { errorHandlers } from './plugins/errors';
 import hashidsPlugin from './plugins/hashids';
+import { audioRoutes } from './audio/routes';
+import { AuthenticatedUser } from './user/tables/users';
+import { fileRoutes } from './files/routes';
 
 declare module 'fastify' {
   export interface FastifyInstance {
@@ -14,8 +17,16 @@ declare module 'fastify' {
   }
 }
 
+declare module '@fastify/jwt' {
+  interface FastifyJWT {
+    user: AuthenticatedUser;
+  }
+}
+
 const fastify = Fastify({
-  logger: false,
+  logger: {
+    level: 'error',
+  },
 });
 
 // plugins
@@ -53,5 +64,7 @@ fastify.register(hashidsPlugin, {
 // routes
 fastify.register(usersRoutes);
 fastify.register(sessionRoutes);
+fastify.register(fileRoutes);
+fastify.register(audioRoutes);
 
 export default fastify;

@@ -18,7 +18,7 @@ function testUnauthorizedError(
 }
 
 describe('GET /session', () => {
-  test('return status 403 if user is not authenticated', async () => {
+  test('return status 401 if user is not authenticated', async () => {
     const response = await server.inject({
       url: '/session',
       method: 'get',

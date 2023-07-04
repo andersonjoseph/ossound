@@ -8,6 +8,7 @@ import {
 } from 'fastify';
 import Hashids from 'hashids';
 import fp from 'fastify-plugin';
+import { BadRequest } from '../errors/errors';
 
 type HashidsPluginOptions = {
   hashidsOptions?: {
@@ -21,6 +22,16 @@ function hashidsPlugin(
   done: (err?: Error) => void,
 ) {
   const hashids = new Hashids();
+
+  const idRegex = /(id|\w+Id$)/;
+
+  function decode(id: string) {
+    try {
+      return hashids.decode(id)[0] || -1;
+    } catch (err) {
+      throw new BadRequest();
+    }
+  }
 
   function isObject(payload: unknown): payload is Record<string, unknown> {
     const typeOfPayload = Object.prototype.toString.call(payload);
@@ -62,7 +73,7 @@ function hashidsPlugin(
         outputObject[key] = hashIdsOnObject(currentValue);
       } else if (isArray(currentValue)) {
         outputObject[key] = hashIdsOnArray(currentValue);
-      } else if (key === 'id') {
+      } else if (idRegex.test(key)) {
         outputObject[key] = hashids.encode(String(outputObject[key]));
       }
     }
@@ -102,7 +113,7 @@ function hashidsPlugin(
 
     function hashIdsInParams(
       request: FastifyRequest,
-      __: FastifyReply,
+      _: FastifyReply,
       done: (err?: Error) => void,
     ) {
       if (!(request.params instanceof Object) || !('id' in request.params)) {
@@ -111,20 +122,45 @@ function hashidsPlugin(
 
       const { id } = request.params;
 
-      request.params.id = hashids.decode(String(id))[0] || -1;
+      request.params.id = decode(String(id));
+      done();
+    }
+
+    function hashIdsInBody(
+      request: FastifyRequest,
+      __: FastifyReply,
+      done: (err?: Error) => void,
+    ) {
+      if (request.body === null || typeof request.body !== 'object') {
+        return done();
+      }
+
+      const body = request.body as Record<string, unknown>;
+
+      const keys = Object.keys(body) as (keyof typeof body)[];
+
+      for (const key of keys) {
+        if (idRegex.test(key)) {
+          body[key] = decode(String(body[key]));
+        }
+      }
+
       done();
     }
 
     const existingPreValidationHooks =
       (routeOptions.preValidation as preValidationHookHandler[]) || [];
+
     routeOptions.preValidation = [
       hashIdsInParams,
+      hashIdsInBody,
       ...existingPreValidationHooks,
     ];
 
     const existingPreSerializationHooks =
       (routeOptions.preSerialization as preSerializationHookHandler<unknown>[]) ||
       [];
+
     routeOptions.preSerialization = [
       hashIdsInPayload,
       ...existingPreSerializationHooks,
