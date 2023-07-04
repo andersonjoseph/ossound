@@ -40,7 +40,7 @@ export function updateUser(
   fastify: FastifyInstance,
   _: FastifyPluginOptions,
   done: (err?: Error) => void,
-) {
+): void {
   fastify.patch(
     '/users/:id',
     { config: { validationConfig } },

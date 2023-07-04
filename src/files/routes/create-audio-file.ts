@@ -11,7 +11,7 @@ export function createAudioFile(
   fastify: FastifyInstance,
   _: FastifyPluginOptions,
   done: (err?: Error) => void,
-) {
+): void {
   fastify.register(fastifyMultipart, {
     limits: {
       files: 1,

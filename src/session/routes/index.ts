@@ -7,7 +7,7 @@ export function sessionRoutes(
   fastify: FastifyInstance,
   _: FastifyPluginOptions,
   done: (err?: Error) => void,
-) {
+): void {
   fastify.register(createSession);
   fastify.register(createPasswordReset);
   fastify.register(getSession);

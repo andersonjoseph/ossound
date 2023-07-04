@@ -23,7 +23,7 @@ export function createPasswordReset(
   fastify: FastifyInstance,
   _: FastifyPluginOptions,
   done: (err?: Error) => void,
-) {
+): void {
   fastify.post(
     '/session/password-reset',
     { config: { validationConfig } },

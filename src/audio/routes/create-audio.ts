@@ -31,7 +31,7 @@ export function createAudio(
   fastify: FastifyInstance,
   _: FastifyPluginOptions,
   done: (err?: Error) => void,
-) {
+): void {
   fastify.post(
     '/audios',
     { config: { validationConfig }, onRequest: [fastify.authenticate] },

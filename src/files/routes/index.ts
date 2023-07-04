@@ -6,7 +6,7 @@ export function fileRoutes(
   fastify: FastifyInstance,
   _: FastifyPluginOptions,
   done: (err?: Error) => void,
-) {
+): void {
   fastify.register(createAudioFile);
   fastify.register(removeAudioFile);
 

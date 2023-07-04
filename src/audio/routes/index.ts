@@ -8,7 +8,7 @@ export function audioRoutes(
   fastify: FastifyInstance,
   _: FastifyPluginOptions,
   done: (err?: Error) => void,
-) {
+): void {
   fastify.register(createAudio);
   fastify.register(getAudio);
   fastify.register(removeAudio);

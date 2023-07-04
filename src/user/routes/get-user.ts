@@ -19,7 +19,7 @@ export function getUser(
   fastify: FastifyInstance,
   _: FastifyPluginOptions,
   done: (err?: Error) => void,
-) {
+): void {
   fastify.get(
     '/users/:id',
     { config: { validationConfig } },

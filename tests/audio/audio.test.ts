@@ -6,7 +6,7 @@ import { SerializedUser } from '../../src/user/tables/users';
 import { randNumber, randText } from '@ngneat/falso';
 import { Audio } from '../../src/audio/tables/audios';
 
-function assertAudio(data: Audio) {
+function assertAudio(data: Audio): void {
   assert.equal(typeof data.id, 'string', 'id is a string');
   assert.equal(typeof data.title, 'string', 'title is a string');
   assert.equal(typeof data.description, 'string', 'description is a string');

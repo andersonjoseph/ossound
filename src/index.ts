@@ -1,6 +1,6 @@
 import server from './server';
 
-const start = async () => {
+const start = async (): Promise<void> => {
   try {
     await server.listen({ port: 3000, host: '0.0.0.0' });
   } catch (err) {

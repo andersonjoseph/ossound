@@ -19,7 +19,7 @@ export function createSession(
   fastify: FastifyInstance,
   _: FastifyPluginOptions,
   done: (err?: Error) => void,
-) {
+): void {
   fastify.post(
     '/session',
     { config: { validationConfig } },

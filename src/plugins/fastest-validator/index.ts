@@ -13,7 +13,7 @@ function fastestValidator(
   fastify: FastifyInstance,
   _: FastifyPluginOptions,
   done: (err?: Error) => void,
-) {
+): void {
   const validator = new Validator();
 
   fastify.addHook('onRoute', (routeOptions) => {
@@ -43,7 +43,7 @@ function fastestValidator(
       request: FastifyRequest,
       reply: FastifyReply,
       done: (err?: Error) => void,
-    ) {
+    ): void {
       const errors = [];
       let result:
         | true

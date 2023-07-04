@@ -19,7 +19,7 @@ export function removeAudio(
   fastify: FastifyInstance,
   _: FastifyPluginOptions,
   done: (err?: Error) => void,
-) {
+): void {
   fastify.delete(
     '/audios/:id',
     { config: { validationConfig }, onRequest: [fastify.authenticate] },

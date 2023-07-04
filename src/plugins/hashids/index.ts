@@ -9,6 +9,7 @@ import {
 import Hashids from 'hashids';
 import fp from 'fastify-plugin';
 import { BadRequest } from '../errors/errors';
+import { NumberLike } from 'hashids/cjs/util';
 
 type HashidsPluginOptions = {
   hashidsOptions?: {
@@ -20,12 +21,12 @@ function hashidsPlugin(
   fastify: FastifyInstance,
   options: FastifyPluginOptions & HashidsPluginOptions,
   done: (err?: Error) => void,
-) {
+): void {
   const hashids = new Hashids();
 
   const idRegex = /(id|\w+Id$)/;
 
-  function decode(id: string) {
+  function decode(id: string): NumberLike {
     try {
       return hashids.decode(id)[0] || -1;
     } catch (err) {
@@ -59,7 +60,9 @@ function hashidsPlugin(
     return outputArray;
   }
 
-  function hashIdsOnObject(obj: Record<string, unknown>) {
+  function hashIdsOnObject(
+    obj: Record<string, unknown>,
+  ): Record<string, unknown> {
     const outputObject: Record<string, unknown> = JSON.parse(
       JSON.stringify(obj),
     );
@@ -97,7 +100,7 @@ function hashidsPlugin(
       __: FastifyReply,
       payload: unknown,
       done: (err?: Error | null, payload?: unknown) => void,
-    ) {
+    ): void {
       let newPayload: unknown;
 
       if (isArray(payload)) {
@@ -115,7 +118,7 @@ function hashidsPlugin(
       request: FastifyRequest,
       _: FastifyReply,
       done: (err?: Error) => void,
-    ) {
+    ): void {
       if (!(request.params instanceof Object) || !('id' in request.params)) {
         return done();
       }
@@ -130,7 +133,7 @@ function hashidsPlugin(
       request: FastifyRequest,
       __: FastifyReply,
       done: (err?: Error) => void,
-    ) {
+    ): void {
       if (request.body === null || typeof request.body !== 'object') {
         return done();
       }

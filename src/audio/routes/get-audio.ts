@@ -18,7 +18,7 @@ export function getAudio(
   fastify: FastifyInstance,
   _: FastifyPluginOptions,
   done: (err?: Error) => void,
-) {
+): void {
   fastify.get(
     '/audios/:id',
     { config: { validationConfig } },

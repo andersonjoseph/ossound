@@ -10,7 +10,10 @@ import {
 import testUtils from '../utils';
 import { SerializedUser } from '../../src/user/tables/users';
 
-function testUserIsValid(body: Record<string, unknown>, data: SerializedUser) {
+function testUserIsValid(
+  body: Record<string, unknown>,
+  data: SerializedUser,
+): void {
   assert.ok('id' in body, 'id is defined');
   assert.strictEqual(typeof body.id, 'string', 'id is a string');
 

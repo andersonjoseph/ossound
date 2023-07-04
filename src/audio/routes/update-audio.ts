@@ -41,7 +41,7 @@ export function updateAudio(
   fastify: FastifyInstance,
   _: FastifyPluginOptions,
   done: (err?: Error) => void,
-) {
+): void {
   fastify.patch(
     '/audios/:id',
     { config: { validationConfig }, onRequest: [fastify.authenticate] },

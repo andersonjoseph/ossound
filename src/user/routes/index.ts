@@ -7,7 +7,7 @@ export function usersRoutes(
   fastify: FastifyInstance,
   _: FastifyPluginOptions,
   done: (err?: Error) => void,
-) {
+): void {
   fastify.register(createUser);
   fastify.register(getUser);
   fastify.register(updateUser);
