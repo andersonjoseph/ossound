@@ -25,9 +25,9 @@ services:
     ports:
       - '8080:3000'
     volumes:
-      - .:/usr/src/app
+      - ./:/usr/app
     environment:
-      POSTGRES_URL: postgresql://user:password@postgres-test/ossound-test
+      POSTGRES_URL: postgresql://user:password@postgres/ossound
       JWT_SECRET: HLJLSWIXUKAWOBREWREKUYAKOKOCHIYI
 
   adminer:
