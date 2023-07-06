@@ -48,7 +48,7 @@ async function createRandomUser(): Promise<RandomUserResponse> {
 async function createSession(data: {
   username: string;
   password: string;
-}): Promise<{token: string}> {
+}): Promise<{ token: string }> {
   const response = await server.inject({
     url: '/session',
     method: 'post',
