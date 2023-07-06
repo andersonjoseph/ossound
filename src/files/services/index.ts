@@ -1,7 +1,12 @@
 import { eq } from 'drizzle-orm';
+import { createWriteStream } from 'fs';
+import fs from 'fs/promises';
+import { Readable } from 'stream';
+import { pipeline } from 'stream/promises';
 import { db } from '../../db';
 import { NotFound } from '../../plugins/errors/errors';
 import { File, filesTable, NewFile } from '../tables/files';
+import path from 'path';
 
 type GetOptions = {
   throwIfNotFound?: boolean;
@@ -11,7 +16,13 @@ const defaultOptions: GetOptions = {
   throwIfNotFound: true,
 };
 
-async function create(data: NewFile): Promise<File> {
+async function create(data: NewFile, fileStream: Readable): Promise<File> {
+  const writeStream = createWriteStream(
+    path.join(__dirname, '..', '..', '..', 'uploads', `${data.fileName}`),
+  );
+
+  await pipeline(fileStream, writeStream);
+
   const [newFile] = await db.insert(filesTable).values(data).returning();
 
   return newFile;
@@ -34,8 +45,12 @@ async function getByColumn(
   return file;
 }
 
-async function remove(id: number): Promise<void> {
-  await db.delete(filesTable).where(eq(filesTable.id, id));
+async function remove(file: File): Promise<void> {
+  await db.delete(filesTable).where(eq(filesTable.id, file.id));
+  await fs.rm(
+    path.join(__dirname, '..', '..', '..', 'uploads', `${file.fileName}`),
+    { force: true },
+  );
 }
 
 export default {

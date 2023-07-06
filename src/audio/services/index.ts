@@ -61,8 +61,11 @@ async function getByColumn(
   return audio;
 }
 
-async function remove(id: number): Promise<void> {
-  await db.delete(audiosTable).where(eq(audiosTable.id, id));
+async function remove(audio: Audio): Promise<void> {
+  const file = await fileService.getByColumn('id', audio.fileId);
+  await fileService.remove(file);
+
+  await db.delete(audiosTable).where(eq(audiosTable.id, audio.id));
 }
 
 async function update(audio: Audio, data: Partial<NewAudio>): Promise<Audio> {

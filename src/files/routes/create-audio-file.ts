@@ -34,18 +34,16 @@ export function createAudioFile(
       const fileName =
         Date.now() + '-' + randomBytes(16).toString('hex') + '.mp3';
 
-      const newFile = await fileService.create({
-        fileName,
-        mime: data.mimetype,
-        userId: Number(user.id),
-        isUsed: false,
-      });
-
-      const writeStream = createWriteStream(
-        path.join(__dirname, '..', '..', '..', 'uploads', `${fileName}`),
+      const newFile = await fileService.create(
+        {
+          fileName,
+          mime: data.mimetype,
+          userId: Number(user.id),
+          isUsed: false,
+        },
+        data.file,
       );
 
-      await pipeline(data.file, writeStream);
       reply.status(201).send(newFile);
     },
   );
