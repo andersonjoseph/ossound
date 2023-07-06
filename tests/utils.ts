@@ -13,7 +13,7 @@ import path from 'node:path';
 import { File } from '../src/files/tables/files';
 import { SerializedAudio } from '../src/audio/tables/audios';
 
-type RandomUserResponse = {
+export type RandomUserResponse = {
   input: Parameters<typeof userService['create']>[0];
   data: SerializedUser;
 };

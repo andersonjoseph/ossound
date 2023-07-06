@@ -12,12 +12,11 @@ const defaultOptions: GetOptions = {
   throwIfNotFound: true,
 };
 
-async function create(userData: NewUser): Promise<User> {
-  userData.password = await bcrypt.hash(userData.password, 10);
-
+async function throwIfUserExists(userData: NewUser): Promise<void> {
   let existingUser = await getByColumn('email', userData.email, {
     throwIfNotFound: false,
   });
+
   if (existingUser) {
     const conflictError = new Conflict();
     conflictError.message = 'an user with this email already exists';
@@ -28,12 +27,19 @@ async function create(userData: NewUser): Promise<User> {
   existingUser = await getByColumn('username', userData.username, {
     throwIfNotFound: false,
   });
+
   if (existingUser) {
     const conflictError = new Conflict();
     conflictError.message = 'an user with this username already exists';
 
     throw conflictError;
   }
+}
+
+async function create(userData: NewUser): Promise<User> {
+  await throwIfUserExists(userData);
+
+  userData.password = await bcrypt.hash(userData.password, 10);
 
   const [newUser] = await db.insert(usersTable).values(userData).returning();
 
@@ -64,6 +70,7 @@ async function update(
   if (!Object.keys(data).length) {
     return user;
   }
+  await throwIfUserExists(user);
 
   const [updatedUser] = await db
     .update(usersTable)

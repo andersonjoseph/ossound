@@ -1,5 +1,5 @@
 import assert from 'node:assert';
-import { describe, test } from 'node:test';
+import { beforeEach, describe, test } from 'node:test';
 import server from '../../src/server';
 import {
   randEmail,
@@ -7,7 +7,7 @@ import {
   randFirstName,
   randNumber,
 } from '@ngneat/falso';
-import testUtils from '../utils';
+import testUtils, { RandomUserResponse } from '../utils';
 import { SerializedUser } from '../../src/user/tables/users';
 
 function testUserIsValid(
@@ -58,28 +58,60 @@ describe('PATCH /users/:id', () => {
   });
 
   describe('return 400 if the update body is not valid', () => {
-    test('empty username', async () => {
-      const user = await testUtils.createRandomUser();
+    let user: RandomUserResponse;
 
+    beforeEach(async () => {
+      user = await testUtils.createRandomUser();
+    });
+
+    test('empty username', async () => {
       await testInvalidUserUpdate(user.data.id, {
         username: '',
       });
     });
 
     test('short username', async () => {
-      const user = await testUtils.createRandomUser();
-
       await testInvalidUserUpdate(user.data.id, {
         username: 'a',
       });
     });
 
     test('empty email', async () => {
-      const user = await testUtils.createRandomUser();
-
       await testInvalidUserUpdate(user.data.id, {
         email: '',
       });
+    });
+  });
+
+  describe('return 409 when user/email is duplicated', () => {
+    test('duplicated email', async () => {
+      const user = await testUtils.createRandomUser();
+      const otherUser = await testUtils.createRandomUser();
+
+      const response = await server.inject({
+        url: `/users/${user.data.id}`,
+        method: 'patch',
+        body: {
+          email: otherUser.data.email,
+        },
+      });
+
+      assert.strictEqual(response.statusCode, 409, 'status is 409');
+    });
+
+    test('duplicated username', async () => {
+      const user = await testUtils.createRandomUser();
+      const otherUser = await testUtils.createRandomUser();
+
+      const response = await server.inject({
+        url: `/users/${user.data.id}`,
+        method: 'patch',
+        body: {
+          username: otherUser.data.username,
+        },
+      });
+
+      assert.strictEqual(response.statusCode, 409, 'status is 409');
     });
   });
 });
