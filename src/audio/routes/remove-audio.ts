@@ -36,7 +36,7 @@ export function removeAudio(
         throw forbiddenErr;
       }
 
-      await audioService.remove(id);
+      await audioService.remove(audio);
 
       reply.code(204).send();
     },

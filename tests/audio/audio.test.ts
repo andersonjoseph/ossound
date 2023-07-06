@@ -175,6 +175,42 @@ describe('DELETE /audios/:id', () => {
   });
 });
 
+describe('GET /users/:id/audios', () => {
+  test('return status 200 and an empty array if user does not exists', async () => {
+    const response = await server.inject({
+      url: `/users/${randNumber()}/audios`,
+      method: 'get',
+    });
+
+    const JSONBody = JSON.parse(response.body);
+
+    assert.strictEqual(response.statusCode, 200, 'statusCode is 200');
+    assert.ok(Array.isArray(JSONBody));
+    assert.strictEqual(JSONBody.length, 0);
+  });
+
+  test('return status 200 and an array with user Audios', async () => {
+    const user = await testUtils.createRandomUser();
+    const session = await testUtils.createSession({
+      username: user.data.username,
+      password: user.input.password,
+    });
+    const audio = await testUtils.createRandomAudio(session);
+
+    const response = await server.inject({
+      url: `/users/${user.data.id}/audios`,
+      method: 'get',
+    });
+
+    const JSONBody = JSON.parse(response.body);
+
+    assert.strictEqual(response.statusCode, 200, 'statusCode is 200');
+    assert.ok(Array.isArray(JSONBody));
+    assert.strictEqual(JSONBody.length, 1);
+    assert.deepStrictEqual(JSONBody[0], audio);
+  });
+});
+
 describe('GET /audios/:id', () => {
   test('return status 404 if audio does not exists', async () => {
     const response = await server.inject({
