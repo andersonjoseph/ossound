@@ -70,6 +70,9 @@ devDependencies:
   form-auto-content:
     specifier: ^3.1.0
     version: 3.1.0
+  insomnia-documenter:
+    specifier: ^0.5.5
+    version: 0.5.5
   prettier:
     specifier: ^2.8
     version: 2.8.0
@@ -1608,6 +1611,13 @@ packages:
       delayed-stream: 1.0.0
     dev: true
 
+  /commander@3.0.2:
+    resolution:
+      {
+        integrity: sha512-Gar0ASD4BDyKC4hl4DwHqDrmvjoxWKZigVnAbn5H1owvm4CxCPdb0HQDehwNYMJpla5+M2tPmPARzhtYuwpHow==,
+      }
+    dev: true
+
   /commander@9.5.0:
     resolution:
       {
@@ -1646,6 +1656,13 @@ packages:
       }
     engines: { node: '>= 0.6' }
     dev: false
+
+  /copy-dir@1.3.0:
+    resolution:
+      {
+        integrity: sha512-Q4+qBFnN4bwGwvtXXzbp4P/4iNk0MaiGAzvQ8OiMtlLjkIKjmNN689uVzShSM0908q7GoFHXIPx4zi75ocoaHw==,
+      }
+    dev: true
 
   /create-require@1.1.1:
     resolution:
@@ -2758,6 +2775,18 @@ packages:
         integrity: sha512-k/vGaX4/Yla3WzyMCvTQOXYeIHvqOKtnqBduzTHpzpQZzAskKMhZ2K+EnBiSM9zGSoIFeMpXKxa4dYeZIQqewQ==,
       }
 
+  /insomnia-documenter@0.5.5:
+    resolution:
+      {
+        integrity: sha512-lfe9m9aQubfTORzFoAlcLUwwFyivwASgUWCjmMX9l4NpIEYlrvIcmNmz453y9PGhkB47mmSV/9t5nHQCeozP0Q==,
+      }
+    hasBin: true
+    dependencies:
+      commander: 3.0.2
+      copy-dir: 1.3.0
+      mkdirp: 0.5.6
+    dev: true
+
   /ipaddr.js@1.9.1:
     resolution:
       {
@@ -3092,6 +3121,13 @@ packages:
       brace-expansion: 2.0.1
     dev: true
 
+  /minimist@1.2.8:
+    resolution:
+      {
+        integrity: sha512-2yyAR8qBkN3YuheJanUpWC5U3bb5osDywNB8RzDVlDwDHbocAJveqqj1u8+SVD7jkWT4yvsHCpWqqWqAxb0zCA==,
+      }
+    dev: true
+
   /minipass@3.3.6:
     resolution:
       {
@@ -3128,6 +3164,16 @@ packages:
       minipass: 3.3.6
       yallist: 4.0.0
     dev: false
+
+  /mkdirp@0.5.6:
+    resolution:
+      {
+        integrity: sha512-FP+p8RB8OWpF3YZBCrP5gtADmtXApB5AMLn+vdyA+PyxCjrCs00mjyUozssO33cwDeT3wNGdLxJ5M//YqtHAJw==,
+      }
+    hasBin: true
+    dependencies:
+      minimist: 1.2.8
+    dev: true
 
   /mkdirp@1.0.4:
     resolution:
