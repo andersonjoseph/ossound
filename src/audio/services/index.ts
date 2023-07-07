@@ -4,6 +4,7 @@ import { Audio, audiosTable, NewAudio } from '../tables/audios';
 import { and, eq, gt } from 'drizzle-orm';
 import fileService from '../../files/services';
 import { assignDefined } from '../../utils';
+import { filesTable } from '../../files/tables/files';
 
 type PaginationOptions = {
   after?: number;
@@ -43,6 +44,10 @@ async function create(audioData: NewAudio): Promise<Audio> {
   }
 
   const [newAudio] = await db.insert(audiosTable).values(audioData).returning();
+  await db
+    .update(filesTable)
+    .set({ isUsed: true })
+    .where(eq(filesTable.id, file.id));
 
   return newAudio;
 }
