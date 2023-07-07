@@ -1,5 +1,4 @@
 import { FastifyInstance, FastifyPluginOptions, FastifyRequest } from 'fastify';
-import { Forbidden } from '../../plugins/errors/errors';
 import { GetTypeFromValidationSchema } from '../../plugins/fastest-validator/types';
 import fileService from '../services';
 
@@ -15,30 +14,25 @@ type ParamsBody = GetTypeFromValidationSchema<
 
 type Request = FastifyRequest<{ Params: ParamsBody }>;
 
-export function removeAudioFile(
+export function getFile(
   fastify: FastifyInstance,
   _: FastifyPluginOptions,
   done: (err?: Error) => void,
 ): void {
-  fastify.delete(
+  fastify.get(
     '/files/:id',
-    { config: { validationConfig }, onRequest: [fastify.authenticate] },
+    { config: { validationConfig } },
     async (request: Request, reply) => {
-      const { user } = request;
       const { id } = request.params;
 
       const file = await fileService.getByColumn('id', id);
+      const fileStream = fileService.getFileStream(file.fileName);
 
-      if (file.userId !== Number(user.id)) {
-        const forbiddenErr = new Forbidden();
-        forbiddenErr.message = 'You do not have permission to delete the file';
-
-        throw forbiddenErr;
-      }
-
-      await fileService.remove(file);
-
-      reply.status(204).send();
+      return reply
+        .header('Content-Type', 'application/octet-stream')
+        .type(file.mime)
+        .status(200)
+        .send(fileStream);
     },
   );
 

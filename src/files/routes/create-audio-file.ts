@@ -1,9 +1,6 @@
 import fastifyMultipart from '@fastify/multipart';
 import { randomBytes } from 'crypto';
 import { FastifyInstance, FastifyPluginOptions } from 'fastify';
-import { createWriteStream } from 'fs';
-import path from 'path';
-import { pipeline } from 'stream/promises';
 import { BadRequest } from '../../plugins/errors/errors';
 import fileService from '../services';
 
