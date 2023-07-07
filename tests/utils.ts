@@ -76,7 +76,7 @@ async function createRandomAudioFile(session: {
   );
 
   const response = await server.inject({
-    url: '/files/audios',
+    url: '/files',
     method: 'post',
     body: form.body,
     headers: {

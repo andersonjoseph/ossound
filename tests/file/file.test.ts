@@ -8,7 +8,7 @@ import path from 'node:path';
 import { SerializedUser } from '../../src/user/tables/users';
 import { randNumber } from '@ngneat/falso';
 
-describe('DELETE /files/audios/:id', () => {
+describe('DELETE /files/:id', () => {
   let user: {
     input: { email: string; username: string; password: string };
     data: SerializedUser;
@@ -89,7 +89,7 @@ describe('DELETE /files/audios/:id', () => {
   });
 });
 
-describe('POST /files/audios', () => {
+describe('POST /files', () => {
   let user: {
     input: { email: string; username: string; password: string };
     data: SerializedUser;
@@ -108,7 +108,7 @@ describe('POST /files/audios', () => {
 
   test('return status 401 if user is not authenticated', async () => {
     const response = await server.inject({
-      url: '/files/audios',
+      url: '/files',
       method: 'post',
     });
 
@@ -133,7 +133,7 @@ describe('POST /files/audios', () => {
       );
 
       const response = await server.inject({
-        url: '/files/audios',
+        url: '/files',
         method: 'post',
         headers: {
           ...form.headers,
@@ -149,7 +149,7 @@ describe('POST /files/audios', () => {
       const form = formAutoContent({}, { payload: 'body' });
 
       const response = await server.inject({
-        url: '/files/audios',
+        url: '/files',
         method: 'post',
         headers: {
           ...form.headers,
@@ -171,7 +171,7 @@ describe('POST /files/audios', () => {
     );
 
     const response = await server.inject({
-      url: '/files/audios',
+      url: '/files',
       method: 'post',
       headers: {
         ...form.headers,

@@ -1,6 +1,6 @@
 import { FastifyInstance, FastifyPluginOptions } from 'fastify';
 import { createAudioFile } from './create-audio-file';
-import { removeAudioFile } from './delete-audio-file';
+import { removeAudioFile } from './delete-file';
 import { getFile } from './get-file';
 
 export function fileRoutes(

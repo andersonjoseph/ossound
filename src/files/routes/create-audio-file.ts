@@ -17,7 +17,7 @@ export function createAudioFile(
   });
 
   fastify.post(
-    '/files/audios',
+    '/files',
     { onRequest: [fastify.authenticate] },
     async (request, reply) => {
       const { user } = request;
