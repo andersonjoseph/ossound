@@ -24,4 +24,4 @@ pnpm t
 
 ## Docs
 
-The REST API documentation is available at [https://hateablestream.github.io/ossound/](https://hateablestream.github.io/ossound/).
+The REST API documentation is available at [https://andersonjoseph.github.io/ossound/](https://andersonjoseph.github.io/ossound/).
