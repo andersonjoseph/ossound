@@ -1,27 +1,15 @@
-# Ossound
+# ossound
 
-This is a simple REST API that provides some basic CRUD operations for audio hosting (inspired on soundgasm)
+To install dependencies:
 
-## Installation
-To install the dependencies, run:
-
-```
-pnpm install
+```bash
+bun install
 ```
 
-To start the server, run:
+To run:
 
-```
-pnpm dev
-```
-
-The server will listen on port 8080 by default. You can change the port by setting the PORT environment variable in `/docker-compose.yml`
-
-## Testing
-```
-pnpm t
+```bash
+bun run index.ts
 ```
 
-## Docs
-
-The REST API documentation is available at [https://andersonjoseph.github.io/ossound/](https://andersonjoseph.github.io/ossound/).
+This project was created using `bun init` in bun v1.0.3. [Bun](https://bun.sh) is a fast all-in-one JavaScript runtime.

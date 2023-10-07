@@ -1,22 +1,27 @@
 {
   "compilerOptions": {
-    "lib": ["es2022"],
-    "module": "Node16",
-    "target": "es2022",
+    "lib": ["ESNext"],
+    "module": "esnext",
+    "target": "esnext",
+    "moduleResolution": "bundler",
+    "moduleDetection": "force",
+    "allowImportingTsExtensions": true,
+    "noEmit": true,
+    "composite": true,
     "strict": true,
-    "esModuleInterop": true,
+    "downlevelIteration": true,
     "skipLibCheck": true,
+    "jsx": "react-jsx",
+    "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
-    "moduleResolution": "node",
-    "outDir": "build",
+    "allowJs": true,
+    "types": [
+      "bun-types" // add Bun global
+    ],
     "paths": {
-      "*": ["./custom-types/*"]
+      "@db/*": ["./src/db/*"],
+      "@common/*": ["./src/common/*"],
+      "@user/*": ["./src/modules/user/*"]
     }
-  },
-  "include": [
-    "src/**/*.ts",
-    "tests/**/*.ts",
-    "scripts/**/*.ts",
-    "./drizzle.config.ts"
-  ]
+  }
 }
